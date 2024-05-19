@@ -2,6 +2,7 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Exporter;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,9 +30,11 @@ otel.ConfigureResource(resource => resource
 
 otel.WithTracing(tracing =>
 {
-    tracing.AddSource("MyTraceSample");
-    tracing.AddAspNetCoreInstrumentation();
-    tracing.AddOtlpExporter(otlpOptions =>
+    tracing
+    .AddSource("MyTraceSample")
+    .AddAspNetCoreInstrumentation()
+    .AddNpgsql()
+    .AddOtlpExporter(otlpOptions =>
     {
         otlpOptions.Protocol = OtlpExportProtocol.HttpProtobuf;
         otlpOptions.Endpoint = new Uri("http://192.168.0.201:5341/ingest/otlp/v1/traces");

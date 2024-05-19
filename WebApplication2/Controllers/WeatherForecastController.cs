@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using OpenTelemetry.Resources;
 using System.Diagnostics;
 
 namespace WebApplication2.Controllers
